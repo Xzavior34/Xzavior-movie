@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>xzavior — Home</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Navbar */
+    .yt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #181818;
+      color: white;
+      padding: 8px 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      flex-wrap: nowrap;
+    }
+    .yt-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .yt-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .yt-logo img {
+      height: 28px;
+      margin-right: 6px;
+    }
+    .yt-logo .yt-red { color: #ff0000; }
+    .yt-search {
+      flex: 1;
+      display: flex;
+      margin: 0 8px;
+    }
+    .yt-search input {
+      padding: 6px 10px;
+      border-radius: 4px 0 0 4px;
+      border: none;
+      flex: 1;
+    }
+    .yt-search button {
+      border-radius: 0 4px 4px 0;
+      border: none;
+      background: #ff0000;
+      color: white;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    .yt-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .icon-btn {
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      position: relative;
+    }
+    .icon-btn:hover { color: #ff4d4d; }
+    .notif-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: red;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 50%;
+      padding: 2px 5px;
+    }
+
+    /* Main content */
+    .yt-main {
+      padding: 0;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+      width: 100vw;
+      margin: 0;
+    }
+    .video-card {
+      cursor: pointer;
+      background: #222;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+    .video-card:hover { transform: scale(1.02); }
+    .video-card img { width: 100%; display: block; }
+    .video-card p { margin: 6px; font-size: 14px; color: #ddd; }
+    #loader { text-align: center; margin: 12px 0; color: #aaa; }
+
+    /* Responsive */
+    @media screen and (max-width: 600px) {
+      .yt-search input { font-size: 14px; }
+      .video-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="yt-header">
+    <div class="yt-header-left">
+      <a href="index.html" class="yt-logo">
+        <img src="assets/logo.svg" alt="logo" onerror="this.style.display='none'"/>
+        <span class="yt-red">x</span>zavior
+      </a>
+    </div>
+
+    <form id="searchForm" class="yt-search" role="search">
+      <input id="searchInput" type="search" placeholder="Search" aria-label="Search" />
+      <button type="submit">🔍</button>
+    </form>
+
+    <div class="yt-header-right">
+      <button class="icon-btn" title="Notifications" id="notifBtn">
+        🔔<span class="notif-badge">99+</span>
+      </button>
+      <img class="avatar" src="https://i.pravatar.cc/40" alt="You"/>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="yt-main" id="mainContent">
+    <div id="videoGrid" class="video-grid" aria-live="polite"></div>
+    <div id="loader" class="loader">Scroll to load more videos…</div>
+  </main>
+
+  <script src="js/youtube.js"></script>
+  <script>
+    (async function () {
+      const grid = document.getElementById('videoGrid');
+      const loader = document.getElementById('loader');
+      const searchForm = document.getElementById('searchForm');
+      const searchInput = document.getElementById('searchInput');
+      const notifBtn = document.getElementById('notifBtn');
+
+      notifBtn.addEventListener('click', () => alert('xzavior notification'));
+
+      function renderVideos(videos) {
+        grid.innerHTML = '';
+        videos.forEach(v => {
+          const div = document.createElement('div');
+          div.className = 'video-card';
+          div.innerHTML = `<img src="${v.thumb}" alt="${v.title}"><p>${v.title}</p>`;
+          div.onclick = () => window.location.href = `watch.html?videoId=${v.id}`;
+          grid.appendChild(div);
+        });
+      }
+
+      loader.textContent = 'Loading trending videos...';
+      await youtube.bootstrapInitial();
+      renderVideos(Array.from(youtube.getFetched()));
+      loader.textContent = '';
+
+      const feed = document.querySelector('.yt-main');
+      feed.addEventListener('scroll', async () => {
+        if (feed.scrollTop + feed.clientHeight >= feed.scrollHeight - 360) {
+          loader.textContent = 'Loading...';
+          await youtube.loadMoreGlobal();
+          renderVideos(Array.from(youtube.getFetched()));
+          loader.textContent = 'Scroll to load more videos…';
+        }
+      });
+
+      searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const q = searchInput.value.trim();
+        if (!q) return;
+        window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== searchInput) {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+
+      window._youtube = youtube;
+    })();
+  </script>
+</body>
+</html>

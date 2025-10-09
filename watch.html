@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Watch Video - x zavior</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Roboto, Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: #202020;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 50;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .search-bar {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-bar input {
+      width: 400px;
+      height: 34px;
+      border-radius: 18px;
+      border: 1px solid #303030;
+      background: #121212;
+      color: #fff;
+      padding: 0 10px;
+    }
+
+    .search-bar button {
+      height: 34px;
+      margin-left: 6px;
+      background: #303030;
+      border: none;
+      border-radius: 18px;
+      color: #fff;
+      cursor: pointer;
+      padding: 0 12px;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: row;
+      margin-top: 56px;
+    }
+
+    .video-player {
+      flex: 3;
+      padding: 20px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 480px;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .video-player h2 {
+      font-size: 20px;
+      margin: 12px 0 6px;
+    }
+
+    .video-player p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #aaa;
+    }
+
+    .related {
+      flex: 1.3;
+      padding: 20px;
+      background: #181818;
+      border-left: 1px solid #222;
+      overflow-y: auto;
+      height: calc(100vh - 56px);
+    }
+
+    .related h3 {
+      margin-top: 0;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .related div {
+      transition: all 0.2s ease;
+    }
+
+    .related div:hover {
+      transform: scale(1.02);
+    }
+
+    .related img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .related p {
+      margin: 6px 0 12px;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+      }
+      .related {
+        border-left: none;
+        height: auto;
+      }
+      iframe {
+        height: 300px;
+      }
+      .search-bar input {
+        width: 70%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-left">
+      <a href="index.html" style="color:white;text-decoration:none;">
+        <div class="logo">X<span style="color:#ff0000">zavior</span></div>
+      </a>
+    </div>
+    <div class="search-bar">
+      <input id="searchInput" placeholder="Search videos..." />
+      <button onclick="searchVideos()">🔍</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="video-player">
+      <iframe id="videoFrame" frameborder="0" allowfullscreen></iframe>
+      <h2 id="videoTitle"></h2>
+      <p id="videoDesc"></p>
+    </div>
+
+    <div class="related">
+      <h3>Related Videos</h3>
+      <div id="relatedVideos"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = 'AIzaSyC0yxeIutKP6aKh2wpj6WIxtJ9x3wXhleo';
+    const params = new URLSearchParams(window.location.search);
+    const videoId = params.get('videoId');
+
+    const iframe = document.getElementById('videoFrame');
+    const titleEl = document.getElementById('videoTitle');
+    const descEl = document.getElementById('videoDesc');
+    const relatedEl = document.getElementById('relatedVideos');
+
+    if (videoId) {
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+      // Fetch video details
+      fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${API_KEY}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.items && data.items.length > 0) {
+            const v = data.items[0].snippet;
+            titleEl.textContent = v.title;
+            descEl.textContent = v.description;
+          }
+        });
+
+      // Fetch related videos
+      fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&maxResults=10&key=${API_KEY}`)
+        .then(res => res.json())
+        .then(data => {
+          data.items.forEach(it => {
+            const div = document.createElement('div');
+            div.style.cursor = 'pointer';
+            div.style.marginBottom = '16px';
+            div.innerHTML = `
+              <img src="${it.snippet.thumbnails.medium.url}" alt="">
+              <p>${it.snippet.title}</p>
+            `;
+            div.onclick = () => window.location.href = `watch.html?videoId=${it.id.videoId}`;
+            relatedEl.appendChild(div);
+          });
+        });
+    }
+
+    function searchVideos() {
+      const q = document.getElementById('searchInput').value;
+      if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+    }
+  </script>
+</body>
+</html>
