@@ -6,193 +6,227 @@
   <title>xzavior — Home</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --red: #ff0000;
+      --red-dark: #cc0000;
+      --bg-main: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
+      --glass-bg: rgba(15, 15, 15, 0.95);
+      --blur: blur(10px);
+      --header-height: 54px;
+      --avatar-size: 32px;
+      --avatar-border: 1.5px solid rgba(255, 0, 0, 0.3);
+      --avatar-border-hover: #ff0000;
+      --card-radius: 0;
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
+      background: var(--bg-main);
       color: #fff;
+      min-height: 100vh;
+      width: 100%;
       overflow-x: hidden;
     }
-    
-    /* Navbar with glassmorphism - FIXED HEIGHT */
+
+    /* Header - compact, single line, always at top */
     .yt-header {
-      display: grid;
-      grid-template-columns: 200px 1fr 200px;
-      align-items: center;
-      background: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: white;
-      padding: 16px 32px;
-      height: 80px;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 100;
-      border-bottom: 1px solid rgba(255, 0, 0, 0.2);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    }
-    .yt-header-left {
+      height: var(--header-height);
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      color: white;
+      border-bottom: 1px solid rgba(255, 0, 0, 0.12);
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      padding: 0 10px;
+      gap: 8px;
+    }
+    .yt-header-left, .yt-header-right {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      height: 100%;
+    }
+    .yt-header-left {
+      min-width: 80px;
     }
     .yt-logo {
       display: flex;
       align-items: center;
       text-decoration: none;
-      color: white;
+      color: inherit;
       font-weight: 700;
-      font-size: 24px;
+      font-size: 20px;
       letter-spacing: -0.5px;
-      transition: transform 0.3s ease;
-    }
-    .yt-logo:hover {
-      transform: scale(1.05);
+      transition: transform var(--transition);
+      height: 100%;
     }
     .yt-logo img {
-      height: 32px;
-      margin-right: 8px;
+      height: 22px;
+      margin-right: 6px;
       filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.5));
     }
     .yt-logo .yt-red { 
-      color: #ff0000;
-      text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+      color: var(--red);
+      text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
     }
-    
-    /* Centered search bar */
     .yt-search {
+      flex: 1 1 0;
       display: flex;
+      align-items: center;
       justify-content: center;
-      width: 100%;
+      min-width: 0;
+      max-width: 350px;
+      margin: 0 7px;
+      height: 36px;
     }
     .yt-search-container {
       display: flex;
       width: 100%;
-      max-width: 600px;
-      position: relative;
+      min-width: 0;
+      height: 36px;
     }
     .yt-search input {
-      padding: 12px 20px;
-      border-radius: 50px 0 0 50px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      background: rgba(30, 30, 30, 0.6);
+      padding: 7px 12px;
+      border-radius: 18px 0 0 18px;
+      border: 1.2px solid rgba(255,255,255,0.13);
+      background: rgba(30,30,30,0.54);
       color: #fff;
-      flex: 1;
+      flex: 1 1 0;
       outline: none;
-      font-size: 15px;
-      transition: all 0.3s ease;
+      font-size: 14px;
+      height: 100%;
+      min-width: 0;
+      max-width: 170px;
+      transition: var(--transition);
     }
     .yt-search input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 13px;
     }
     .yt-search input:focus {
-      border-color: rgba(255, 0, 0, 0.5);
-      background: rgba(30, 30, 30, 0.9);
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+      border-color: rgba(255,0,0,0.36);
+      background: rgba(30,30,30,0.85);
+      box-shadow: 0 0 10px rgba(255,0,0,0.13);
     }
     .yt-search button {
-      border-radius: 0 50px 50px 0;
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0 18px 18px 0;
+      border: 1.2px solid rgba(255,255,255,0.13);
       border-left: none;
-      background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
       color: white;
-      padding: 12px 28px;
+      padding: 0 13px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 18px;
-    }
-    .yt-search button:hover {
-      background: linear-gradient(135deg, #ff3333 0%, #ff0000 100%);
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-      transform: translateX(2px);
-    }
-    
-    .yt-header-right {
+      font-size: 17px;
+      transition: var(--transition);
+      height: 100%;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 16px;
+      justify-content: center;
+    }
+    .yt-search button:hover {
+      background: linear-gradient(135deg, #ff3333 0%, var(--red) 100%);
+      box-shadow: 0 0 10px rgba(255,0,0,0.18);
+      transform: translateX(1px);
     }
     .icon-btn {
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
       color: white;
-      font-size: 20px;
+      font-size: 18px;
       position: relative;
-      padding: 10px;
-      transition: all 0.3s ease;
+      padding: 7px;
+      transition: var(--transition);
       border-radius: 50%;
-      width: 42px;
-      height: 42px;
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .icon-btn:hover {
-      background: rgba(255, 0, 0, 0.2);
-      border-color: rgba(255, 0, 0, 0.5);
-      transform: scale(1.1);
+      background: rgba(255,0,0,0.13);
+      border-color: rgba(255,0,0,0.3);
+      transform: scale(1.09);
     }
     .notif-badge {
       position: absolute;
       top: 0;
       right: 0;
-      background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
       color: white;
-      font-size: 9px;
+      font-size: 8px;
       font-weight: bold;
-      border-radius: 10px;
-      padding: 2px 5px;
-      min-width: 16px;
+      border-radius: 8px;
+      padding: 1.2px 4px;
+      min-width: 12px;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(255, 0, 0, 0.6);
+      box-shadow: 0 1px 5px rgba(255,0,0,0.3);
     }
     .avatar {
-      width: 38px;
-      height: 38px;
+      width: var(--avatar-size);
+      height: var(--avatar-size);
       border-radius: 50%;
       cursor: pointer;
-      border: 2px solid rgba(255, 0, 0, 0.3);
-      transition: all 0.3s ease;
+      border: var(--avatar-border);
+      transition: var(--transition);
+      object-fit: cover;
+      background: #191919;
     }
     .avatar:hover {
-      border-color: #ff0000;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-      transform: scale(1.1);
+      border-color: var(--avatar-border-hover);
+      box-shadow: 0 0 6px rgba(255,0,0,0.19);
+      transform: scale(1.08);
     }
-
-    /* Main content - FULL WIDTH */
+    /* Main content offset by header height */
     .yt-main {
       width: 100%;
-      padding: 32px 24px;
-      min-height: calc(100vh - 66px);
-      margin-top: 0;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      padding-top: var(--header-height);
+      box-sizing: border-box;
+      display: block;
     }
-    
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
-      margin-bottom: 32px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
       width: 100%;
+      max-width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding: 0 3px;
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
-    
     .video-card {
       cursor: pointer;
       background: rgba(20, 20, 20, 0.6);
-      border-radius: 0;
+      border-radius: var(--card-radius);
       overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: var(--transition);
       border: none;
-      border-right: 1px solid rgba(255, 255, 255, 0.03);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      border-right: 1px solid rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(255,255,255,0.02);
       position: relative;
     }
     .video-card::before {
@@ -202,21 +236,21 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(255, 0, 0, 0.15) 0%, transparent 100%);
+      background: linear-gradient(135deg, rgba(255,0,0,0.08) 0%, transparent 100%);
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity var(--transition);
       pointer-events: none;
     }
     .video-card:hover {
       transform: scale(1.03);
-      box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4);
+      box-shadow: 0 4px 16px rgba(255,0,0,0.18);
       z-index: 10;
     }
     .video-card:hover::before {
       opacity: 1;
     }
     .video-card:focus-visible {
-      outline: 2px solid #ff0000;
+      outline: 2px solid var(--red);
       outline-offset: -2px;
       z-index: 10;
     }
@@ -229,154 +263,118 @@
       aspect-ratio: 16/9;
       object-fit: cover;
       background: linear-gradient(135deg, #1a1a1a 0%, #2a1a2a 100%);
-      transition: transform 0.3s ease;
+      transition: transform var(--transition);
       display: block;
     }
     .video-card:hover .video-thumbnail {
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
     .video-card p {
       margin: 0;
-      padding: 14px;
-      font-size: 14px;
+      padding: 10px;
+      font-size: 13px;
       color: #fff;
       font-weight: 500;
-      line-height: 1.4;
+      line-height: 1.35;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      min-height: 65px;
+      min-height: 46px;
       background: rgba(15, 15, 15, 0.8);
     }
-    
     #loader {
       text-align: center;
-      padding: 32px;
-      color: rgba(255, 255, 255, 0.6);
+      padding: 18px;
+      color: rgba(255,255,255,0.6);
       font-size: 14px;
     }
     .loader-spinner {
       display: inline-block;
-      width: 32px;
-      height: 32px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top-color: #ff0000;
+      width: 24px;
+      height: 24px;
+      border: 2.5px solid rgba(255,255,255,0.09);
+      border-top-color: var(--red);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-
-    /* Responsive */
-    @media screen and (max-width: 1400px) {
-      .video-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-      }
-    }
-    
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 600px) {
       .yt-header {
-        grid-template-columns: 180px 1fr 180px;
-        padding: 12px 24px;
+        padding: 0 3px;
+        gap: 4px;
+        height: 46px;
       }
-      .yt-main {
-        padding: 28px 20px;
+      .yt-logo {
+        font-size: 16px;
       }
-      .video-grid {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 18px;
-      }
-    }
-    
-    @media screen and (max-width: 768px) {
-      .yt-header {
-        grid-template-columns: auto 1fr auto;
-        padding: 10px 16px;
-        gap: 12px;
-      }
-      .yt-search-container {
-        max-width: 100%;
-      }
-      .yt-search input {
-        padding: 10px 16px;
-        font-size: 14px;
-      }
-      .yt-search button {
-        padding: 10px 20px;
-      }
-      .yt-main {
-        padding: 24px 16px;
-      }
-      .video-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 16px;
-      }
-    }
-    
-    @media screen and (max-width: 480px) {
-      .yt-header {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-      .yt-header-left {
-        grid-column: 1;
-        justify-content: center;
+      .yt-logo img {
+        height: 16px;
+        margin-right: 4px;
       }
       .yt-search {
-        grid-column: 1;
-        order: 3;
+        max-width: 120px;
+        min-width: 0;
+        margin: 0 2px;
+        height: 30px;
       }
-      .yt-header-right {
-        grid-column: 1;
-        justify-content: center;
-        order: 2;
+      .yt-search-container {
+        height: 30px;
       }
-      .yt-main {
-        padding: 20px 12px;
+      .yt-search input {
+        padding: 5px 7px;
+        font-size: 12px;
+        border-radius: 14px 0 0 14px;
+        max-width: 80px;
       }
-      .video-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+      .yt-search button {
+        padding: 0 7px;
+        font-size: 15px;
+        border-radius: 0 14px 14px 0;
+      }
+      .icon-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 15px;
+        padding: 3.5px;
+      }
+      .avatar {
+        width: 22px;
+        height: 22px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <header class="yt-header">
+  <header class="yt-header" role="banner">
     <div class="yt-header-left">
       <a href="index.html" class="yt-logo" aria-label="xzavior home">
-        <img src="assets/logo.svg" alt="" onerror="this.style.display='none'">
+        <img src="assets/logo.svg" alt="xzavior logo" onerror="this.style.display='none'">
         <span><span class="yt-red">x</span>zavior</span>
       </a>
     </div>
-
-    <form id="searchForm" class="yt-search" role="search">
+    <form id="searchForm" class="yt-search" role="search" autocomplete="off">
       <div class="yt-search-container">
         <input 
           id="searchInput" 
           type="search" 
-          placeholder="Search videos..." 
+          placeholder="Search..." 
           aria-label="Search videos"
-          autocomplete="off"
         >
         <button type="submit" aria-label="Search">🔍</button>
       </div>
     </form>
-
     <div class="yt-header-right">
-      <button class="icon-btn" aria-label="Notifications (99+ unread)" id="notifBtn">
+      <button class="icon-btn" aria-label="Notifications (99+ unread)" id="notifBtn" type="button">
         🔔<span class="notif-badge" aria-hidden="true">99+</span>
       </button>
       <img class="avatar" src="https://i.pravatar.cc/40" alt="Profile picture" loading="lazy">
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
   <main class="yt-main" id="mainContent">
     <div id="videoGrid" class="video-grid" role="list" aria-label="Video feed"></div>
     <div id="loader" aria-live="polite" aria-atomic="true"></div>
@@ -386,92 +384,71 @@
   <script>
     (function() {
       'use strict';
-      
-      // Cache DOM elements
       const grid = document.getElementById('videoGrid');
       const loader = document.getElementById('loader');
       const searchForm = document.getElementById('searchForm');
       const searchInput = document.getElementById('searchInput');
       const notifBtn = document.getElementById('notifBtn');
-      const mainContent = document.getElementById('mainContent');
-
-      // State management
       let isLoading = false;
-      let currentVideos = new Set();
+      let renderedVideos = new Set();
 
-      // Notification handler
       notifBtn.addEventListener('click', () => {
         alert('xzavior notification');
       });
 
-      // Show loading state
       function showLoader(message = 'Loading...') {
         loader.innerHTML = `<div class="loader-spinner"></div><p>${message}</p>`;
       }
-
-      // Hide loader
       function hideLoader() {
         loader.innerHTML = '';
       }
 
-      // Render videos efficiently with DocumentFragment
       function renderVideos(videos) {
-        if (!videos || videos.length === 0) return;
-        
+        if (!videos?.length) return;
         const fragment = document.createDocumentFragment();
-        
-        videos.forEach(v => {
-          // Skip duplicates
-          if (currentVideos.has(v.id)) return;
-          currentVideos.add(v.id);
-          
+        for (const v of videos) {
+          if (renderedVideos.has(v.id)) continue;
+          renderedVideos.add(v.id);
+
           const card = document.createElement('div');
           card.className = 'video-card';
           card.setAttribute('role', 'listitem');
-          card.setAttribute('tabindex', '0');
-          
+          card.tabIndex = 0;
+
           const thumbWrapper = document.createElement('div');
           thumbWrapper.className = 'video-thumbnail-wrapper';
-          
+
           const img = document.createElement('img');
           img.className = 'video-thumbnail';
           img.src = v.thumb;
           img.alt = v.title;
           img.loading = 'lazy';
-          
+
           const title = document.createElement('p');
           title.textContent = v.title;
-          
+
           thumbWrapper.appendChild(img);
           card.appendChild(thumbWrapper);
           card.appendChild(title);
-          
-          // Click and keyboard handler
-          const navigateToVideo = () => {
-            window.location.href = `watch.html?videoId=${encodeURIComponent(v.id)}`;
-          };
-          
-          card.addEventListener('click', navigateToVideo);
-          card.addEventListener('keydown', (e) => {
+
+          const navigate = () => window.location.href = `watch.html?videoId=${encodeURIComponent(v.id)}`;
+          card.addEventListener('click', navigate);
+          card.addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              navigateToVideo();
+              e.preventDefault(); navigate();
             }
           });
-          
+
           fragment.appendChild(card);
-        });
-        
+        }
         grid.appendChild(fragment);
       }
 
-      // Initialize page
       async function init() {
         try {
           showLoader('Loading trending videos...');
           await youtube.bootstrapInitial();
-          const videos = Array.from(youtube.getFetched());
-          renderVideos(videos);
+          renderVideos(Array.from(youtube.getFetched()));
           hideLoader();
         } catch (error) {
           console.error('Failed to load videos:', error);
@@ -479,24 +456,18 @@
         }
       }
 
-      // Infinite scroll with debouncing
+      // Infinite scroll with debounce
       let scrollTimeout;
-      function handleScroll() {
+      window.addEventListener('scroll', () => {
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(async () => {
           if (isLoading) return;
-          
-          const scrollPosition = window.scrollY + window.innerHeight;
-          const threshold = document.documentElement.scrollHeight - 500;
-          
-          if (scrollPosition >= threshold) {
+          if ((window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 500) {
             isLoading = true;
             showLoader('Loading more videos...');
-            
             try {
               await youtube.loadMoreGlobal();
-              const videos = Array.from(youtube.getFetched());
-              renderVideos(videos);
+              renderVideos(Array.from(youtube.getFetched()));
             } catch (error) {
               console.error('Failed to load more videos:', error);
             } finally {
@@ -505,33 +476,25 @@
             }
           }
         }, 100);
-      }
+      }, { passive: true });
 
-      // Event listeners
-      window.addEventListener('scroll', handleScroll, { passive: true });
-
-      searchForm.addEventListener('submit', (e) => {
+      searchForm.addEventListener('submit', e => {
         e.preventDefault();
         const query = searchInput.value.trim();
-        if (query) {
-          window.location.href = `search.html?q=${encodeURIComponent(query)}`;
-        }
+        if (query) window.location.href = `search.html?q=${encodeURIComponent(query)}`;
       });
 
       // Keyboard shortcut for search
-      window.addEventListener('keydown', (e) => {
+      window.addEventListener('keydown', e => {
         if (e.key === '/' && document.activeElement !== searchInput) {
           e.preventDefault();
           searchInput.focus();
         }
       });
 
-      // Expose for debugging
-      window._youtube = youtube;
-
-      // Start the app
+      window._youtube = youtube; // for debugging
       init();
     })();
   </script>
 </body>
-  </html>
+    </html>
