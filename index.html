@@ -1,500 +1,772 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>xzavior — Home</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    :root {
-      --red: #ff0000;
-      --red-dark: #cc0000;
-      --bg-main: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
-      --glass-bg: rgba(15, 15, 15, 0.95);
-      --blur: blur(10px);
-      --header-height: 54px;
-      --avatar-size: 32px;
-      --avatar-border: 1.5px solid rgba(255, 0, 0, 0.3);
-      --avatar-border-hover: #ff0000;
-      --card-radius: 0;
-      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg-main);
-      color: #fff;
-      min-height: 100vh;
-      width: 100%;
-      overflow-x: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Movie App UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #0D1017; color: #e5e7eb;
+            font-family: 'Inter', sans-serif; overscroll-behavior: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Header - compact, single line, always at top */
-    .yt-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      height: var(--header-height);
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur);
-      -webkit-backdrop-filter: var(--blur);
-      color: white;
-      border-bottom: 1px solid rgba(255, 0, 0, 0.12);
-      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-      gap: 8px;
-    }
-    .yt-header-left, .yt-header-right {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      height: 100%;
-    }
-    .yt-header-left {
-      min-width: 80px;
-    }
-    .yt-logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      color: inherit;
-      font-weight: 700;
-      font-size: 20px;
-      letter-spacing: -0.5px;
-      transition: transform var(--transition);
-      height: 100%;
-    }
-    .yt-logo img {
-      height: 22px;
-      margin-right: 6px;
-      filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.5));
-    }
-    .yt-logo .yt-red { 
-      color: var(--red);
-      text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
-    }
-    .yt-search {
-      flex: 1 1 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 0;
-      max-width: 350px;
-      margin: 0 7px;
-      height: 36px;
-    }
-    .yt-search-container {
-      display: flex;
-      width: 100%;
-      min-width: 0;
-      height: 36px;
-    }
-    .yt-search input {
-      padding: 7px 12px;
-      border-radius: 18px 0 0 18px;
-      border: 1.2px solid rgba(255,255,255,0.13);
-      background: rgba(30,30,30,0.54);
-      color: #fff;
-      flex: 1 1 0;
-      outline: none;
-      font-size: 14px;
-      height: 100%;
-      min-width: 0;
-      max-width: 170px;
-      transition: var(--transition);
-    }
-    .yt-search input::placeholder {
-      color: rgba(255, 255, 255, 0.35);
-      font-size: 13px;
-    }
-    .yt-search input:focus {
-      border-color: rgba(255,0,0,0.36);
-      background: rgba(30,30,30,0.85);
-      box-shadow: 0 0 10px rgba(255,0,0,0.13);
-    }
-    .yt-search button {
-      border-radius: 0 18px 18px 0;
-      border: 1.2px solid rgba(255,255,255,0.13);
-      border-left: none;
-      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-      color: white;
-      padding: 0 13px;
-      cursor: pointer;
-      font-size: 17px;
-      transition: var(--transition);
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .yt-search button:hover {
-      background: linear-gradient(135deg, #ff3333 0%, var(--red) 100%);
-      box-shadow: 0 0 10px rgba(255,0,0,0.18);
-      transform: translateX(1px);
-    }
-    .icon-btn {
-      cursor: pointer;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.10);
-      color: white;
-      font-size: 18px;
-      position: relative;
-      padding: 7px;
-      transition: var(--transition);
-      border-radius: 50%;
-      width: 34px;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .icon-btn:hover {
-      background: rgba(255,0,0,0.13);
-      border-color: rgba(255,0,0,0.3);
-      transform: scale(1.09);
-    }
-    .notif-badge {
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-      color: white;
-      font-size: 8px;
-      font-weight: bold;
-      border-radius: 8px;
-      padding: 1.2px 4px;
-      min-width: 12px;
-      text-align: center;
-      box-shadow: 0 1px 5px rgba(255,0,0,0.3);
-    }
-    .avatar {
-      width: var(--avatar-size);
-      height: var(--avatar-size);
-      border-radius: 50%;
-      cursor: pointer;
-      border: var(--avatar-border);
-      transition: var(--transition);
-      object-fit: cover;
-      background: #191919;
-    }
-    .avatar:hover {
-      border-color: var(--avatar-border-hover);
-      box-shadow: 0 0 6px rgba(255,0,0,0.19);
-      transform: scale(1.08);
-    }
-    /* Main content offset by header height */
-    .yt-main {
-      width: 100%;
-      max-width: 100%;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      padding-top: var(--header-height);
-      box-sizing: border-box;
-      display: block;
-    }
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 12px;
-      margin-bottom: 28px;
-      width: 100%;
-      max-width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-      padding: 0 3px;
-      box-sizing: border-box;
-      overflow-x: hidden;
-    }
-    .video-card {
-      cursor: pointer;
-      background: rgba(20, 20, 20, 0.6);
-      border-radius: var(--card-radius);
-      overflow: hidden;
-      transition: var(--transition);
-      border: none;
-      border-right: 1px solid rgba(255,255,255,0.02);
-      border-bottom: 1px solid rgba(255,255,255,0.02);
-      position: relative;
-    }
-    .video-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(255,0,0,0.08) 0%, transparent 100%);
-      opacity: 0;
-      transition: opacity var(--transition);
-      pointer-events: none;
-    }
-    .video-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 4px 16px rgba(255,0,0,0.18);
-      z-index: 10;
-    }
-    .video-card:hover::before {
-      opacity: 1;
-    }
-    .video-card:focus-visible {
-      outline: 2px solid var(--red);
-      outline-offset: -2px;
-      z-index: 10;
-    }
-    .video-thumbnail-wrapper {
-      position: relative;
-      overflow: hidden;
-    }
-    .video-thumbnail {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2a1a2a 100%);
-      transition: transform var(--transition);
-      display: block;
-    }
-    .video-card:hover .video-thumbnail {
-      transform: scale(1.08);
-    }
-    .video-card p {
-      margin: 0;
-      padding: 10px;
-      font-size: 13px;
-      color: #fff;
-      font-weight: 500;
-      line-height: 1.35;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 46px;
-      background: rgba(15, 15, 15, 0.8);
-    }
-    #loader {
-      text-align: center;
-      padding: 18px;
-      color: rgba(255,255,255,0.6);
-      font-size: 14px;
-    }
-    .loader-spinner {
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      border: 2.5px solid rgba(255,255,255,0.09);
-      border-top-color: var(--red);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-bottom: 8px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    @media screen and (max-width: 600px) {
-      .yt-header {
-        padding: 0 3px;
-        gap: 4px;
-        height: 46px;
-      }
-      .yt-logo {
-        font-size: 16px;
-      }
-      .yt-logo img {
-        height: 16px;
-        margin-right: 4px;
-      }
-      .yt-search {
-        max-width: 120px;
-        min-width: 0;
-        margin: 0 2px;
-        height: 30px;
-      }
-      .yt-search-container {
-        height: 30px;
-      }
-      .yt-search input {
-        padding: 5px 7px;
-        font-size: 12px;
-        border-radius: 14px 0 0 14px;
-        max-width: 80px;
-      }
-      .yt-search button {
-        padding: 0 7px;
-        font-size: 15px;
-        border-radius: 0 14px 14px 0;
-      }
-      .icon-btn {
-        width: 26px;
-        height: 26px;
-        font-size: 15px;
-        padding: 3.5px;
-      }
-      .avatar {
-        width: 22px;
-        height: 22px;
-      }
-    }
-  </style>
+        .buzz-box {
+            background-color: #E50914;
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+        }
+        
+        /* Tab Navigation */
+        .tab-nav-btn {
+            padding-bottom: 8px; font-weight: 500; color: #6B7280;
+            background: none; border: none; cursor: pointer; white-space: nowrap;
+        }
+        .tab-nav-active {
+            font-weight: 700; color: white; border-bottom: 2px solid #505FEE;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav-btn {
+            display: flex; flex-direction: column; align-items: center;
+            color: #6B7280; background: none; border: none; cursor: pointer;
+        }
+        .bottom-nav-active { color: #505FEE; }
+        .bottom-nav-btn span {
+            font-size: 0.75rem; font-weight: 600; margin-top: 0.25rem;
+        }
+
+        /* Modal Overlays */
+        .video-modal-overlay {
+            z-index: 50; display: none; position: fixed;
+            inset: 0; flex-direction: column; align-items: center;
+            justify-content: center; background-color: rgba(0, 0, 0, 0.95);
+            padding: 1rem;
+        }
+        
+        /* Vertical Short Player Styles */
+        #short-video-modal-content {
+            position: relative; width: 100%; max-width: 400px;
+            aspect-ratio: 9 / 16; background-color: #000;
+            border-radius: 1rem; overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        .short-nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            z-index: 60; background-color: rgba(255, 255, 255, 0.2);
+            color: white; border: none; border-radius: 50%;
+            width: 44px; height: 44px; font-size: 1.25rem;
+            cursor: pointer; transition: background-color 0.2s;
+        }
+        .short-nav-btn:hover { background-color: rgba(255, 255, 255, 0.4); }
+
+        /* BuzzBox Styles */
+        .buzz-community-card {
+            position: relative; width: 80px; height: 80px;
+            border-radius: 0.75rem; overflow: hidden;
+            border: 2px solid #FFC107; flex-shrink: 0; cursor: pointer;
+        }
+        .buzz-community-card img { width: 100%; height: 100%; object-fit: cover; }
+        .buzz-community-card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+        }
+        .buzz-community-card-label {
+            position: absolute; bottom: 4px; left: 0; right: 0;
+            text-align: center; color: white; font-size: 0.75rem;
+            font-weight: 600; line-height: 1;
+        }
+        .buzz-community-card-tag {
+            position: absolute; top: 4px; left: 4px;
+            background: rgba(0,0,0,0.6); border-radius: 0.25rem;
+            color: #FFC107; font-size: 0.625rem; font-weight: bold;
+            padding: 2px 4px;
+        }
+        
+        /* NEW: "Me" Page Styles */
+        .me-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            padding: 1rem;
+            background-color: #1A1D24;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        
+        /* NEW: "Downloads" Page Styles */
+        .download-filter-btn {
+            background-color: #252830;
+            color: #9CA3AF;
+            padding: 0.375rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .download-filter-btn.active {
+            background-color: #4A5568;
+            color: white;
+        }
+    </style>
 </head>
-<body>
-  <header class="yt-header" role="banner">
-    <div class="yt-header-left">
-      <a href="index.html" class="yt-logo" aria-label="xzavior home">
-        <img src="assets/logo.svg" alt="xzavior logo" onerror="this.style.display='none'">
-        <span><span class="yt-red">x</span>zavior</span>
-      </a>
+
+<body class="h-screen flex flex-col">
+
+    <header id="main-header" class="px-4 pt-4 pb-2 bg-[#0D1017] sticky top-0 z-20">
+        <div class="flex justify-between items-center mb-4">
+            <button class="text-2xl font-bold text-[#505FEE] w-8 text-center">X</button>
+            <div class="flex-1 mx-4">
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"><i class="fas fa-search"></i></span>
+                    <input id="search-input" type="text" placeholder="Teen Wolf"
+                        class="w-full bg-[#252830] text-white placeholder-gray-500 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-[#505FEE]">
+                </div>
+            </div>
+            <button class="text-xl text-gray-400 w-8 text-center"><i class="fas fa-bell"></i></button>
+        </div>
+
+        <nav id="tab-nav-container" class="flex items-center px-1 text-sm overflow-x-auto scrollbar-hide space-x-4">
+            <button data-query="trending movie trailers" class="tab-nav-btn tab-nav-active">Trending</button>
+            <button data-query="latest movie trailers 2025" class="tab-nav-btn">Movie</button>
+            <button data-query="tv show trailers 2025" class="tab-nav-btn">TV</button>
+            <button data-query="new anime trailers 2025" class="tab-nav-btn">Anime</button>
+            <button data-query="k-drama trailers 2025" class="tab-nav-btn">K-Drama</button>
+            <button data-query="live sports events" class="tab-nav-btn">Live Sport</button>
+            <button data-query="football highlights" class="tab-nav-btn">Football</button>
+        </nav>
+    </header>
+    
+    <header id="buzzbox-header" class="hidden px-4 pt-4 pb-2 bg-[#0D1017] sticky top-0 z-20">
+        <div class="flex justify-center items-center relative h-12">
+            <h1 class="text-2xl font-bold text-white">BuzzBox</h1>
+        </div>
+    </header>
+
+    <header id="downloads-header" class="hidden px-4 pt-4 pb-2 bg-[#0D1017] sticky top-0 z-20">
+        <div class="flex justify-between items-center h-12">
+            <h1 class="text-2xl font-bold text-white">Downloads</h1>
+            <button class="text-green-400 font-semibold flex items-center space-x-1">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Transfer</span>
+            </button>
+        </div>
+    </header>
+
+
+    <main id="app" class="flex-1 overflow-y-auto scrollbar-hide pb-24">
+        
+        <div id="home-view">
+            <section class="w-full px-4 pt-4">
+                <div id="hero-carousel" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide space-x-4">
+                    <div class="w-full h-48 bg-[#252830] rounded-xl flex-shrink-0 flex items-center justify-center"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>
+                </div>
+            </section>
+            
+            <section class="py-4">
+                <div class="flex justify-between items-center px-4 mb-3"><h2 class="text-xl font-bold text-white">Animated Film</h2><a href="#" class="text-sm text-gray-400">All ></a></div>
+                <div id="animated-film-carousel" class="flex overflow-x-auto scrollbar-hide space-x-4 px-4">
+                    <div class="w-32 flex-shrink-0 flex items-center justify-center h-48"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>
+                </div>
+            </section>
+            
+            <section class="py-4">
+                <div class="flex justify-between items-center px-4 mb-3"><h2 class="text-xl font-bold text-white">Movie/TV Series</h2><a href="#" class="text-sm text-gray-400">All ></a></div>
+                <div id="movie-tv-carousel" class="flex overflow-x-auto scrollbar-hide space-x-4 px-4">
+                    <div class="w-32 flex-shrink-0 flex items-center justify-center h-48"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>
+                </div>
+            </section>
+
+            <section class="py-4">
+                <div class="flex justify-between items-center px-4 mb-3"><h2 class="text-xl font-bold text-white">Latest Nollywood Movies</h2><a href="#" class="text-sm text-gray-400">All ></a></div>
+                <div id="nollywood-carousel" class="flex overflow-x-auto scrollbar-hide space-x-4 px-4">
+                    <div class="w-32 flex-shrink-0 flex items-center justify-center h-48"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>
+                </div>
+            </section>
+
+            <section class="py-4">
+                <div class="flex justify-between items-center px-4 mb-3"><h2 class="text-xl font-bold text-white">Horror Movies</h2><a href="#" class="text-sm text-gray-400">All ></a></div>
+                <div id="horror-carousel" class="flex overflow-x-auto scrollbar-hide space-x-4 px-4">
+                    <div class="w-32 flex-shrink-0 flex items-center justify-center h-48"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>
+                </div>
+            </section>
+
+            <section class="py-4">
+                <div class="flex justify-between items-center px-4 mb-3"><h2 class="text-xl font-bold text-white">K-Drama</h2><a href="#" class="text-sm text-gray-400">All ></a></div>
+                <div id="k-drama-carousel" class="flex overflow-x-auto scrollbar-hide space-x-4 px-4">
+                    <div class="w-32 flex-shrink-0 flex items-center justify-center h-48"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>
+                </div>
+            </section>
+        </div>
+
+        <div id="short-tv-view" class="hidden px-4 py-4">
+            <h2 class="text-xl font-bold text-white mb-3">ShortTV Reels <span class="text-red-500">🔴</span></h2>
+            <div id="short-tv-grid" class="grid grid-cols-2 gap-4"></div>
+        </div>
+
+        <div id="search-view" class="hidden px-4 py-4">
+            <h2 id="search-results-title" class="text-xl font-bold text-white mb-3">Search Results</h2>
+            <div id="search-results-grid" class="grid grid-cols-2 gap-4"></div>
+        </div>
+        
+        <div id="buzzbox-view" class="hidden">
+            <section class="py-4">
+                <div class="flex justify-between items-center px-4 mb-3"><h2 class="text-xl font-bold text-white">Community</h2><a href="#" class="text-sm text-gray-400">All ></a></div>
+                <div id="buzzbox-community" class="flex overflow-x-auto scrollbar-hide space-x-3 px-4">
+                    <div class="buzz-community-card" style="border-color: #FBC02D;"><img src="https-placehold-co-80x80-FBC02D-000000?text=😂" alt="Meme"><div class="buzz-community-card-overlay"></div><span class="buzz-community-card-tag">20k</span><span class="buzz-community-card-label">Meme &...</span></div>
+                    <div class="buzz-community-card" style="border-color: #FBC02D;"><img src="https-placehold-co-80x80-FBC02D-000000?text=🤣" alt="LOL"><div class="buzz-community-card-overlay"></div><span class="buzz-community-card-tag">28k</span><span class="buzz-community-card-label">LOL Loop</span></div>
+                    <div class="buzz-community-card" style="border-color: #E50914;"><img src="https-placehold-co-80x80-E50914-FFFFFF?text=N" alt="Netflix"><div class="buzz-community-card-overlay"></div><span class="buzz-community-card-tag">123k</span><span class="buzz-community-card-label">Netflix &...</span></div>
+                    <div class="buzz-community-card" style="border-color: #E91E63;"><img src="https-placehold-co-80x80-E91E63-FFFFFF?text=🔥" alt="Hot"><div class="buzz-community-card-overlay"></div><span class="buzz-community-card-tag">131k</span><span class="buzz-community-card-label">Hot Girls</span></div>
+                    <div class="buzz-community-card" style="border-color: #505FEE;"><img src="https-placehold-co-80x80-505FEE-FFFFFF?text=🎬" alt="Watch"><div class="buzz-community-card-overlay"></div><span class="buzz-community-card-tag">43k</span><span class="buzz-community-card-label">What to...</span></div>
+                </div>
+            </section>
+            <div class="px-4 border-b border-gray-700"><nav class="flex space-x-4"><button class="tab-nav-btn tab-nav-active !pb-2">Explore</button><button class="tab-nav-btn !pb-2">Nearby</button></nav></div>
+            <div id="buzzbox-feed" class="flex flex-col space-y-4 py-4">
+                <div class="w-full flex items-center justify-center h-64"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>
+            </div>
+        </div>
+
+        <div id="downloads-view" class="hidden p-4">
+            <p class="text-gray-400 text-sm mb-4">20.8GB available</p>
+            <div class="flex space-x-2 mb-4">
+                <button class="download-filter-btn active">MovieWay 18</button>
+                <button class="download-filter-btn">Local files</button>
+                <button class="download-filter-btn">Received</button>
+            </div>
+            <div class="flex flex-col space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="relative w-24 h-16 bg-[#252830] rounded-lg overflow-hidden flex-shrink-0"><img src="https-placehold-co-100x70-1f2937-ffffff?text=DMC" alt="Devil May Cry" class="w-full h-full object-cover"><div class="absolute inset-0 flex items-center justify-center"><i class="fas fa-play-circle text-white text-3xl opacity-70"></i></div></div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-white font-semibold line-clamp-1">Devil May Cry</h4>
+                        <p class="text-xs text-gray-400">12 episodes | 713.0MB</p>
+                        <div class="w-full bg-gray-600 rounded-full h-1 mt-1"><div class="bg-green-500 h-1 rounded-full" style="width: 87%"></div></div>
+                    </div>
+                    <button class="bg-green-500 text-white px-5 py-2 rounded-full font-bold text-sm flex-shrink-0">Play</button>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="relative w-24 h-16 bg-[#252830] rounded-lg overflow-hidden flex-shrink-0"><img src="https-placehold-co-100x70-1f2937-ffffff?text=Devil" alt="Part-Timer" class="w-full h-full object-cover"><div class="absolute inset-0 flex items-center justify-center"><i class="fas fa-play-circle text-white text-3xl opacity-70"></i></div></div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-white font-semibold line-clamp-1">The Devil Is a Part-Timer!</h4>
+                        <p class="text-xs text-gray-400">25 episodes | 1.1GB</p>
+                        <div class="w-full bg-gray-600 rounded-full h-1 mt-1"><div class="bg-green-500 h-1 rounded-full" style="width: 99%"></div></div>
+                    </div>
+                    <button class="bg-green-500 text-white px-5 py-2 rounded-full font-bold text-sm flex-shrink-0">Play</button>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="relative w-24 h-16 bg-[#252830] rounded-lg overflow-hidden flex-shrink-0"><img src="https-placehold-co-100x70-1f2937-ffffff?text=Steins" alt="Steins;Gate" class="w-full h-full object-cover"><div class="absolute inset-0 flex items-center justify-center"><i class="fas fa-play-circle text-white text-3xl opacity-70"></i></div></div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-white font-semibold line-clamp-1">Steins;Gate</h4>
+                        <p class="text-xs text-gray-400">2 episodes | 92.5MB</p>
+                        <div class="w-full bg-gray-600 rounded-full h-1 mt-1"><div class="bg-green-500 h-1 rounded-full" style="width: 34%"></div></div>
+                    </div>
+                    <button class="bg-green-500 text-white px-5 py-2 rounded-full font-bold text-sm flex-shrink-0">Play</button>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="relative w-24 h-16 bg-[#252830] rounded-lg overflow-hidden flex-shrink-0"><img src="https-placehold-co-100x70-1f2937-ffffff?text=ReZero" alt="Re:ZERO" class="w-full h-full object-cover"><div class="absolute inset-0 flex items-center justify-center"><i class="fas fa-play-circle text-white text-3xl opacity-70"></i></div></div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-white font-semibold line-clamp-1">Re:ZERO -Starting Life in Another...</h4>
+                        <p class="text-xs text-gray-400">66 episodes | 4.9GB</p>
+                        <div class="w-full bg-gray-600 rounded-full h-1 mt-1"><div class="bg-green-500 h-1 rounded-full" style="width: 98%"></div></div>
+                    </div>
+                    <button class="bg-green-500 text-white px-5 py-2 rounded-full font-bold text-sm flex-shrink-0">Play</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="me-view" class="hidden p-4">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Log in to your account</h1>
+                    <span class="text-sm text-gray-400">ID: 169808768</span>
+                </div>
+                <button class="bg-[#505FEE] text-white px-5 py-2 rounded-lg font-semibold flex-shrink-0">Log in</button>
+            </div>
+            
+            <div class="flex flex-col space-y-2">
+                <button class="me-list-item">
+                    <div class="flex items-center space-x-3"><i class="fas fa-list w-5 text-center"></i><span>My List</span></div>
+                    <div class="flex items-center space-x-2"><span class="text-gray-400">0</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
+                </button>
+                <button class="me-list-item">
+                    <div class="flex items-center space-x-3"><i class="fas fa-comment-dots w-5 text-center"></i><span>Messages</span></div>
+                    <div class="flex items-center space-x-2"><span class="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">2</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
+                </button>
+                <button class="me-list-item">
+                    <div class="flex items-center space-x-3"><i class="fas fa-users w-5 text-center"></i><span>Community</span></div>
+                    <div class="flex items-center space-x-2"><span class="text-gray-400">0</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
+                </button>
+                <button class="me-list-item">
+                    <div class="flex items-center space-x-3"><i class="fas fa-plus-square w-5 text-center"></i><span>Posts</span></div>
+                    <div class="flex items-center space-x-2"><span class="text-gray-400">0</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
+                </button>
+                <button class="me-list-item">
+                    <div class="flex items-center space-x-3"><i class="fas fa-heart w-5 text-center"></i><span>My Likes</span></div>
+                    <div class="flex items-center space-x-2"><span class="text-gray-400">0</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
+                </button>
+                <button class="me-list-item">
+                    <div class="flex items-center space-x-3"><i class="fas fa-comments w-5 text-center"></i><span>My Comments</span></div>
+                    <div class="flex items-center space-x-2"><span class="text-gray-400">0</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
+                </button>
+            </div>
+
+            <div class="flex flex-col space-y-2 mt-6">
+                <button class="me-list-item">
+                    <div class="flex items-center space-x-3"><i class="fas fa-cog w-5 text-center"></i><span>Settings</span></div>
+                    <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                </button>
+                <button class="me-list-item">
+                    <div class="flex items-center space-x-3"><i class="fas fa-flag w-5 text-center"></i><span>Feedback</span></div>
+                    <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+
+        <div id="error-message" class="col-span-full text-center py-10 hidden text-red-400 font-bold px-4">
+            <p>There was an error loading videos. This is likely because the YouTube API key quota has been exceeded or the key is invalid.</p>
+        </div>
+
+    </main>
+
+    <footer class="fixed bottom-0 left-0 w-full bg-[#1A1D24] border-t border-gray-700/50 p-3 z-20">
+        <nav class="flex justify-around items-center">
+            <button id="home-nav-btn" class="bottom-nav-btn bottom-nav-active">
+                <i class="fas fa-home text-lg"></i><span>Home</span>
+            </button>
+            <button id="short-tv-nav-btn" class="bottom-nav-btn">
+                <i class="fas fa-tv text-lg"></i><span>ShortTV</span>
+            </button>
+            <button id="buzzbox-nav-btn" class="w-14 h-14 rounded-full buzz-box flex items-center justify-center -mt-8 shadow-lg">
+                <i class="fas fa-gem text-xl text-white"></i>
+            </button>
+            <button id="downloads-nav-btn" class="bottom-nav-btn"> <i class="fas fa-download text-lg"></i><span>Downloads</span>
+            </button>
+            <button id="me-nav-btn" class="bottom-nav-btn"> <i class="fas fa-user text-lg"></i><span>Me</span>
+            </button>
+        </nav>
+    </footer>
+
+    <div id="movie-modal" class="video-modal-overlay">
+        <div class="relative w-full max-w-4xl max-h-full">
+            <button onclick="closeMovieModal()" class="absolute -top-10 right-0 text-white text-3xl hover:text-indigo-400 transition" aria-label="Close Player"><i class="fas fa-times-circle"></i></button>
+            <div class="relative pt-[56.25%] bg-black rounded-lg overflow-hidden shadow-2xl">
+                <iframe id="movie-player" class="absolute top-0 left-0 w-full h-full" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
-    <form id="searchForm" class="yt-search" role="search" autocomplete="off">
-      <div class="yt-search-container">
-        <input 
-          id="searchInput" 
-          type="search" 
-          placeholder="Search..." 
-          aria-label="Search videos"
-        >
-        <button type="submit" aria-label="Search">🔍</button>
-      </div>
-    </form>
-    <div class="yt-header-right">
-      <button class="icon-btn" aria-label="Notifications (99+ unread)" id="notifBtn" type="button">
-        🔔<span class="notif-badge" aria-hidden="true">99+</span>
-      </button>
-      <img class="avatar" src="https://i.pravatar.cc/40" alt="Profile picture" loading="lazy">
+
+    <div id="short-video-modal" class="video-modal-overlay">
+        <button onclick="closeShortModal()" class="absolute top-4 right-4 text-white text-3xl z-50" aria-label="Close Player"><i class="fas fa-times"></i></button>
+        <div id="short-video-modal-content">
+            <iframe id="short-player" class="absolute top-0 left-0 w-full h-full" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <button id="prev-short-btn" class="short-nav-btn left-2 md:-left-16"><i class="fas fa-chevron-left"></i></button>
+        <button id="next-short-btn" class="short-nav-btn right-2 md:-right-16"><i class="fas fa-chevron-right"></i></button>
     </div>
-  </header>
 
-  <main class="yt-main" id="mainContent">
-    <div id="videoGrid" class="video-grid" role="list" aria-label="Video feed"></div>
-    <div id="loader" aria-live="polite" aria-atomic="true"></div>
-  </main>
 
-  <script src="js/youtube.js"></script>
-  <script>
-    (function() {
-      'use strict';
-      const grid = document.getElementById('videoGrid');
-      const loader = document.getElementById('loader');
-      const searchForm = document.getElementById('searchForm');
-      const searchInput = document.getElementById('searchInput');
-      const notifBtn = document.getElementById('notifBtn');
-      let isLoading = false;
-      let renderedVideos = new Set();
+    <script>
+        // === YOUTUBE API CLIENT ===
+        const youtube = (function () {
 
-      notifBtn.addEventListener('click', () => {
-        alert('xzavior notification');
-      });
+            // ==========================================================
+            // ▼▼▼ THIS IS YOUR REQUESTED API KEY ▼▼▼
+            // This key is an invalid placeholder and will not work.
+            // The app will be stuck on "loading" until you replace this.
+            // ==========================================================
+            const API_KEY = 'AIzaSyC0yxeIutKP6aKh2wpj6WIxtJ9x3wXhleo';
+            // ==========================================================
 
-      function showLoader(message = 'Loading...') {
-        loader.innerHTML = `<div class="loader-spinner"></div><p>${message}</p>`;
-      }
-      function hideLoader() {
-        loader.innerHTML = '';
-      }
-
-      function renderVideos(videos) {
-        if (!videos?.length) return;
-        const fragment = document.createDocumentFragment();
-        for (const v of videos) {
-          if (renderedVideos.has(v.id)) continue;
-          renderedVideos.add(v.id);
-
-          const card = document.createElement('div');
-          card.className = 'video-card';
-          card.setAttribute('role', 'listitem');
-          card.tabIndex = 0;
-
-          const thumbWrapper = document.createElement('div');
-          thumbWrapper.className = 'video-thumbnail-wrapper';
-
-          const img = document.createElement('img');
-          img.className = 'video-thumbnail';
-          img.src = v.thumb;
-          img.alt = v.title;
-          img.loading = 'lazy';
-
-          const title = document.createElement('p');
-          title.textContent = v.title;
-
-          thumbWrapper.appendChild(img);
-          card.appendChild(thumbWrapper);
-          card.appendChild(title);
-
-          const navigate = () => window.location.href = `watch.html?videoId=${encodeURIComponent(v.id)}`;
-          card.addEventListener('click', navigate);
-          card.addEventListener('keydown', e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault(); navigate();
+            const BASE = 'https://www.googleapis.com/youtube/v3';
+            function normalize(item) {
+                const id = item.id?.videoId || item.id;
+                const sn = item.snippet || {};
+                return {
+                    id,
+                    title: sn.title || 'Untitled',
+                    thumb: (sn.thumbnails && (sn.thumbnails.high || sn.thumbnails.medium))?.url || '',
+                };
             }
-          });
+            async function fetchWithRetry(url) {
+                try {
+                    const res = await fetch(url);
+                    if (!res.ok) {
+                        const errorBody = await res.json();
+                        const errorReason = errorBody.error.errors[0].reason;
+                        if (errorReason === 'quotaExceeded' || errorReason === 'keyInvalid') {
+                            console.error(`%cFATAL ERROR: YouTube API key is invalid or quota is exceeded.`, 'color: red; font-size: 1.2em; font-weight: bold;');
+                            throw new Error('Invalid API Key or Quota Exceeded');
+                        }
+                        throw new Error(`YouTube API ${res.status}: ${res.statusText}`);
+                    }
+                    return res.json();
+                } catch (e) { console.warn(`API call failed:`, e.message); throw e; }
+            }
+            async function search(q, maxResults = 10) {
+                const url = new URL(`${BASE}/search`);
+                url.searchParams.set('part', 'snippet');
+                url.searchParams.set('q', q);
+                url.searchParams.set('type', 'video');
+                url.searchParams.set('maxResults', String(maxResults));
+                url.searchParams.set('key', API_KEY);
+                if (q.includes('shorts')) { url.searchParams.set('videoDuration', 'short'); } 
+                else { url.searchParams.set('videoDefinition', 'high'); }
+                const res = await fetchWithRetry(url.toString());
+                return res.items.filter(it => it.id.videoId).map((it) => normalize(it));
+            }
+            return { search };
+        })();
 
-          fragment.appendChild(card);
+        // === APPLICATION UI & STATE ===
+        const ui = {
+            error: document.getElementById('error-message'),
+            searchInput: document.getElementById('search-input'),
+            tabNavContainer: document.getElementById('tab-nav-container'),
+            
+            // Headers
+            mainHeader: document.getElementById('main-header'),
+            buzzboxHeader: document.getElementById('buzzbox-header'),
+            downloadsHeader: document.getElementById('downloads-header'),
+
+            // Views
+            homeView: document.getElementById('home-view'),
+            shortTvView: document.getElementById('short-tv-view'),
+            searchView: document.getElementById('search-view'),
+            buzzboxView: document.getElementById('buzzbox-view'),
+            downloadsView: document.getElementById('downloads-view'),
+            meView: document.getElementById('me-view'),
+            
+            // Home Carousels
+            heroCarousel: document.getElementById('hero-carousel'),
+            animatedFilmCarousel: document.getElementById('animated-film-carousel'),
+            movieTvCarousel: document.getElementById('movie-tv-carousel'),
+            nollywoodCarousel: document.getElementById('nollywood-carousel'),
+            horrorCarousel: document.getElementById('horror-carousel'),
+            kDramaCarousel: document.getElementById('k-drama-carousel'),
+            
+            shortTvGrid: document.getElementById('short-tv-grid'),
+            
+            searchResultsTitle: document.getElementById('search-results-title'),
+            searchResultsGrid: document.getElementById('search-results-grid'),
+            
+            buzzboxFeed: document.getElementById('buzzbox-feed'),
+
+            // Bottom Nav
+            homeNavBtn: document.getElementById('home-nav-btn'),
+            shortTvNavBtn: document.getElementById('short-tv-nav-btn'),
+            buzzboxNavBtn: document.getElementById('buzzbox-nav-btn'),
+            downloadsNavBtn: document.getElementById('downloads-nav-btn'),
+            meNavBtn: document.getElementById('me-nav-btn'),
+
+            // Modals
+            movieModal: document.getElementById('movie-modal'),
+            moviePlayer: document.getElementById('movie-player'),
+            shortModal: document.getElementById('short-video-modal'),
+            shortPlayer: document.getElementById('short-player'),
+            prevShortBtn: document.getElementById('prev-short-btn'),
+            nextShortBtn: document.getElementById('next-short-btn'),
+        };
+
+        let currentShorts = [];
+        let currentShortIndex = 0;
+        let shortTvLoaded = false;
+        let homePageLoaded = false;
+        let buzzboxLoaded = false;
+        // Downloads and Me pages are static, no 'loaded' flag needed.
+
+        // === Card Creation ===
+        function createHeroCard(video) {
+            const card = document.createElement('div');
+            card.className = 'relative w-full h-48 bg-[#252830] rounded-xl overflow-hidden cursor-pointer snap-start flex-shrink-0 group';
+            card.onclick = () => openMovieModal(video.id);
+            card.innerHTML = `<img src="${video.thumb}" alt="${video.title}" onerror="this.src='https-placehold-co-600x300-1f2937-ffffff?text=No+Preview';" class="absolute h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="absolute bottom-4 left-4"><h3 class="text-white text-xl font-bold line-clamp-1">${video.title}</h3></div><div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/70 opacity-0 transition-opacity group-hover:opacity-100"><i class="fas fa-play-circle text-5xl"></i></div>`;
+            return card;
         }
-        grid.appendChild(fragment);
-      }
 
-      async function init() {
-        try {
-          showLoader('Loading trending videos...');
-          await youtube.bootstrapInitial();
-          renderVideos(Array.from(youtube.getFetched()));
-          hideLoader();
-        } catch (error) {
-          console.error('Failed to load videos:', error);
-          loader.innerHTML = '<p style="color:#ff4444;">Failed to load videos. Please refresh the page.</p>';
+        function createMovieCard(video) {
+            const card = document.createElement('div');
+            card.className = 'w-32 flex-shrink-0 cursor-pointer group';
+            card.onclick = () => openMovieModal(video.id);
+            card.innerHTML = `<div class="relative w-full h-48 rounded-lg overflow-hidden bg-[#252830]"><img src="${video.thumb}" alt="${video.title}" onerror="this.src='https-placehold-co-300x450-1f2937-ffffff?text=No+Preview';" class="absolute h-full w-full object-cover"><div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 bg-black bg-opacity-40"><i class="fas fa-play-circle text-white text-4xl opacity-80"></i></div></div><h3 class="text-white text-sm font-semibold line-clamp-1 mt-2">${video.title}</h3>`;
+            return card;
         }
-      }
+        
+        function createGridCard(video) {
+            const card = document.createElement('div');
+            card.className = 'w-full flex-shrink-0 cursor-pointer group';
+            card.onclick = () => openMovieModal(video.id);
+            card.innerHTML = `<div class="relative w-full h-64 rounded-lg overflow-hidden bg-[#252830]"><img src="${video.thumb}" alt="${video.title}" onerror="this.src='https-placehold-co-300x450-1f2937-ffffff?text=No+Preview';" class="absolute h-full w-full object-cover"><div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 bg-black bg-opacity-40"><i class="fas fa-play-circle text-white text-4xl opacity-80"></i></div></div><h3 class="text-white text-sm font-semibold line-clamp-1 mt-2">${video.title}</h3>`;
+            return card;
+        }
 
-      // Infinite scroll with debounce
-      let scrollTimeout;
-      window.addEventListener('scroll', () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(async () => {
-          if (isLoading) return;
-          if ((window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 500) {
-            isLoading = true;
-            showLoader('Loading more videos...');
+        function createShortVideoCard(video, index) {
+            const card = document.createElement('div');
+            card.className = 'relative w-full pt-[177.77%] rounded-lg overflow-hidden bg-[#252830] cursor-pointer group';
+            card.onclick = () => openShortModal(index);
+            card.innerHTML = `<img src="${video.thumb}" alt="${video.title}" onerror="this.src='https-placehold-co-270x480-1f2937-ffffff?text=No+Preview';" class="absolute top-0 left-0 h-full w-full object-cover"><div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 bg-black bg-opacity-40"><i class="fas fa-play-circle text-white text-4xl opacity-80"></i></div><div class="absolute bottom-0 left-0 p-2 bg-gradient-to-t from-black/60 to-transparent w-full"><h3 class="text-white text-xs font-semibold line-clamp-2">${video.title}</h3></div>`;
+            return card;
+        }
+        
+        function createBuzzPostCard(post) {
+            const card = document.createElement('div');
+            card.className = 'bg-[#1A1D24] rounded-lg overflow-hidden';
+            const videoContent = post.video ? `
+                <div class="relative w-full pt-[56.25%] bg-black cursor-pointer" onclick="openMovieModal('${post.video.id}')">
+                    <img src="${post.video.thumb}" alt="${post.video.title}" class="absolute top-0 left-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 flex items-center justify-center opacity-70"><i class="far fa-play-circle text-white text-5xl"></i></div>
+                </div>` : 
+                '<div class="w-full h-48 bg-[#252830] flex items-center justify-center"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>';
+            card.innerHTML = `
+                <div class="p-4">
+                    <div class="flex items-center space-x-3"><img src="${post.avatar}" alt="${post.channel}" class="w-10 h-10 rounded-full"><div><h4 class="font-semibold text-white">${post.channel}</h4><span class="text-xs text-gray-400">@${post.handle}</span></div></div>
+                    <p class="text-white my-3">${post.text}</p>
+                </div>
+                ${videoContent}
+                <div class="p-4 flex items-center justify-between text-gray-400">
+                    <div class="flex items-center space-x-4"><button class="flex items-center space-x-1"><i class="far fa-heart"></i><span>${post.likes}</span></button><button class="flex items-center space-x-1"><i class="far fa-comment-dots"></i><span>${post.comments}</span></button></div>
+                    <button><i class="fas fa-share"></i></button>
+                </div>`;
+            return card;
+        }
+
+        // === Rendering Logic ===
+        function renderCarousel(container, videos, cardType = 'movie') {
+            if (!container) return;
+            container.innerHTML = '';
+            if (videos.length === 0) { container.innerHTML = '<p class="text-gray-500">No videos found.</p>'; return; }
+            videos.forEach((video, index) => {
+                let card;
+                if (cardType === 'hero') card = createHeroCard(video);
+                else if (cardType === 'short') card = createShortVideoCard(video, index);
+                else card = createMovieCard(video);
+                container.appendChild(card);
+            });
+        }
+        
+        function renderGrid(container, videos, cardType = 'grid') {
+            if (!container) return;
+            container.innerHTML = '';
+            if (videos.length === 0) { container.innerHTML = '<p class="text-gray-500 col-span-2">No videos found.</p>'; return; }
+            const createFn = (cardType === 'short') ? createShortVideoCard : createGridCard;
+            videos.forEach((video, index) => {
+                container.appendChild(createFn(video, index));
+            });
+        }
+        
+        function renderBuzzFeed(posts) {
+            ui.buzzboxFeed.innerHTML = '';
+            posts.forEach(post => { ui.buzzboxFeed.appendChild(createBuzzPostCard(post)); });
+        }
+
+        async function executeSearch(query, title) {
+            if (!query.trim()) return;
+            switchView('search');
+            updateTabNavActive(null);
+            ui.searchResultsTitle.textContent = title;
+            ui.searchResultsGrid.innerHTML = `<div class="col-span-2 w-full flex items-center justify-center h-64"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>`;
             try {
-              await youtube.loadMoreGlobal();
-              renderVideos(Array.from(youtube.getFetched()));
-            } catch (error) {
-              console.error('Failed to load more videos:', error);
-            } finally {
-              hideLoader();
-              isLoading = false;
+                const results = await youtube.search(query, 20);
+                renderGrid(ui.searchResultsGrid, results, 'grid');
+            } catch (e) {
+                showError(e);
+                ui.searchResultsGrid.innerHTML = '<p class="text-red-400 col-span-2">Could not load videos.</p>';
             }
-          }
-        }, 100);
-      }, { passive: true });
-
-      searchForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const query = searchInput.value.trim();
-        if (query) window.location.href = `search.html?q=${encodeURIComponent(query)}`;
-      });
-
-      // Keyboard shortcut for search
-      window.addEventListener('keydown', e => {
-        if (e.key === '/' && document.activeElement !== searchInput) {
-          e.preventDefault();
-          searchInput.focus();
         }
-      });
 
-      window._youtube = youtube; // for debugging
-      init();
-    })();
-  </script>
+        function showError(e) {
+            console.error('Failed to load content:', e);
+            ui.error.classList.remove('hidden');
+            ui.homeView.classList.add('hidden');
+            ui.shortTvView.classList.add('hidden');
+            ui.searchView.classList.add('hidden');
+            ui.buzzboxView.classList.add('hidden');
+            ui.downloadsView.classList.add('hidden');
+            ui.meView.classList.add('hidden');
+        }
+
+        // === Active State Management ===
+        function updateTabNavActive(clickedButton) {
+            ui.tabNavContainer.querySelectorAll('.tab-nav-btn').forEach(btn => btn.classList.remove('tab-nav-active'));
+            if (clickedButton) clickedButton.classList.add('tab-nav-active');
+        }
+
+        // UPDATED: Manages all views and headers
+        async function switchView(view) {
+            // Hide all views
+            ui.homeView.classList.add('hidden');
+            ui.shortTvView.classList.add('hidden');
+            ui.searchView.classList.add('hidden');
+            ui.buzzboxView.classList.add('hidden');
+            ui.downloadsView.classList.add('hidden');
+            ui.meView.classList.add('hidden');
+
+            // Hide all headers
+            ui.mainHeader.classList.add('hidden');
+            ui.buzzboxHeader.classList.add('hidden');
+            ui.downloadsHeader.classList.add('hidden');
+            
+            // Reset bottom nav
+            ui.homeNavBtn.classList.remove('bottom-nav-active');
+            ui.shortTvNavBtn.classList.remove('bottom-nav-active');
+            ui.downloadsNavBtn.classList.remove('bottom-nav-active');
+            ui.meNavBtn.classList.remove('bottom-nav-active');
+            
+            if (view === 'home') {
+                ui.homeView.classList.remove('hidden');
+                ui.mainHeader.classList.remove('hidden');
+                ui.homeNavBtn.classList.add('bottom-nav-active');
+                if (!homePageLoaded) { initializeAppHome(); homePageLoaded = true; }
+            } else if (view === 'short') {
+                ui.shortTvView.classList.remove('hidden');
+                ui.mainHeader.classList.remove('hidden');
+                ui.shortTvNavBtn.classList.add('bottom-nav-active');
+                if (!shortTvLoaded) {
+                    ui.shortTvGrid.innerHTML = `<div class="col-span-2 w-full flex items-center justify-center h-64"><i class="fas fa-spinner fa-spin text-2xl text-gray-500"></i></div>`;
+                    try {
+                        const results = await youtube.search('youtube shorts reels', 20);
+                        currentShorts = results;
+                        renderGrid(ui.shortTvGrid, results, 'short');
+                        shortTvLoaded = true;
+                    } catch (e) { showError(e); ui.shortTvGrid.innerHTML = '<p class="text-red-400 col-span-2">Could not load shorts.</p>'; }
+                }
+            } else if (view === 'buzzbox') {
+                ui.buzzboxView.classList.remove('hidden');
+                ui.buzzboxHeader.classList.remove('hidden');
+                // No active bottom nav button
+                if (!buzzboxLoaded) { initializeAppBuzzBox(); buzzboxLoaded = true; }
+            } else if (view === 'downloads') {
+                ui.downloadsView.classList.remove('hidden');
+                ui.downloadsHeader.classList.remove('hidden');
+                ui.downloadsNavBtn.classList.add('bottom-nav-active');
+            } else if (view === 'me') {
+                ui.meView.classList.remove('hidden');
+                // No header for 'Me' page
+                ui.meNavBtn.classList.add('bottom-nav-active');
+            } else if (view === 'search') {
+                ui.searchView.classList.remove('hidden');
+                ui.mainHeader.classList.remove('hidden');
+                // No active bottom nav button
+            }
+        }
+
+        // === Event Listener Setup ===
+        function setupClickListeners() {
+            ui.tabNavContainer.addEventListener('click', (e) => {
+                const clickedButton = e.target.closest('.tab-nav-btn');
+                if (!clickedButton) return;
+                const query = clickedButton.dataset.query;
+                const title = clickedButton.textContent;
+                if (!query) return;
+                updateTabNavActive(clickedButton);
+                if (query === 'trending movie trailers') { switchView('home'); } 
+                else { executeSearch(query, title); }
+            });
+
+            ui.searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const query = ui.searchInput.value;
+                    if (!query) return;
+                    executeSearch(query, `Results for: "${query}"`);
+                }
+            });
+
+            // Bottom Navigation
+            ui.homeNavBtn.addEventListener('click', () => switchView('home'));
+            ui.shortTvNavBtn.addEventListener('click', () => switchView('short'));
+            ui.buzzboxNavBtn.addEventListener('click', () => switchView('buzzbox'));
+            ui.downloadsNavBtn.addEventListener('click', () => switchView('downloads'));
+            ui.meNavBtn.addEventListener('click', () => switchView('me'));
+            
+            // Short Player Navigation
+            ui.nextShortBtn.addEventListener('click', playNextShort);
+            ui.prevShortBtn.addEventListener('click', playPrevShort);
+        }
+
+        // === Modal Control ===
+        function getEmbedUrl(videoId) {
+            const originUrl = encodeURIComponent(window.location.origin);
+            return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&modestbranding=1&fs=1&origin=${originUrl}`;
+        }
+        function openMovieModal(videoId) { ui.moviePlayer.src = getEmbedUrl(videoId); ui.movieModal.style.display = 'flex'; }
+        function closeMovieModal() { ui.moviePlayer.src = ''; ui.movieModal.style.display = 'none'; }
+        function openShortModal(index) {
+            if (currentShorts.length === 0) return;
+            currentShortIndex = index;
+            ui.shortPlayer.src = getEmbedUrl(currentShorts[currentShortIndex].id);
+            ui.shortModal.style.display = 'flex';
+        }
+        function closeShortModal() { ui.shortPlayer.src = ''; ui.shortModal.style.display = 'none'; }
+        function playNextShort() {
+            currentShortIndex = (currentShortIndex + 1) % currentShorts.length;
+            ui.shortPlayer.src = getEmbedUrl(currentShorts[currentShortIndex].id);
+        }
+        function playPrevShort() {
+            currentShortIndex = (currentShortIndex - 1 + currentShorts.length) % currentShorts.length;
+            ui.shortPlayer.src = getEmbedUrl(currentShorts[currentShortIndex].id);
+        }
+
+        // === INITIALIZATION ===
+        async function initializeAppHome() {
+            try {
+                const [
+                    hero, animated, movieTv, nollywood, horror, kdrama
+                ] = await Promise.all([
+                    youtube.search('tron ares trailer', 3),
+                    youtube.search('animated film trailers 2025', 10),
+                    youtube.search('movie and tv series trailers 2025', 10),
+                    youtube.search('latest nollywood movies 2025', 10),
+                    youtube.search('horror movie trailers', 10),
+                    youtube.search('k-drama trailers', 10)
+                ]);
+
+                renderCarousel(ui.heroCarousel, hero, 'hero');
+                renderCarousel(ui.animatedFilmCarousel, animated, 'movie');
+                renderCarousel(ui.movieTvCarousel, movieTv, 'movie');
+                renderCarousel(ui.nollywoodCarousel, nollywood, 'movie');
+                renderCarousel(ui.horrorCarousel, horror, 'movie');
+                renderCarousel(ui.kDramaCarousel, kdrama, 'movie');
+
+            } catch (e) { showError(e); }
+        }
+        
+        async function initializeAppBuzzBox() {
+            try {
+                const [vid1] = await youtube.search('funny family skits', 1);
+                const [vid2] = await youtube.search('funny memes compilation', 1);
+                
+                const posts = [
+                    {
+                        channel: 'SaiDhiya', handle: 'SaiDhiya',
+                        avatar: 'https-placehold-co-40x40-505FEE-FFFFFF?text=S',
+                        text: 'He caught his mother doing something naughty 😂😂😂😂😂',
+                        video: vid1[0], likes: '8.7k', comments: '123'
+                    },
+                    {
+                        channel: 'Meme & Scream', handle: 'Faya',
+                        avatar: 'https-placehold-co-40x40-FBC02D-000000?text=😂',
+                        text: 'You\'re thinking it too, right?😂😂',
+                        video: vid2[0], likes: '1.2k', comments: '45'
+                    }
+                ];
+                renderBuzzFeed(posts);
+            } catch (e) { 
+                showError(e); 
+                ui.buzzboxFeed.innerHTML = '<p class="text-red-400 p-4">Could not load BuzzBox feed.</p>';
+            }
+        }
+
+        window.onload = function () {
+            switchView('home'); // Start on the home view
+            setupClickListeners();
+            ui.movieModal.addEventListener('click', (e) => { if (e.target === ui.movieModal) closeMovieModal(); });
+            ui.shortModal.addEventListener('click', (e) => { if (e.target === ui.shortModal) closeShortModal(); });
+        };
+    </script>
+
 </body>
-    </html>
+</html>
